@@ -1,0 +1,65 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "ai-proxy-cloudflare",
+  "main": "src/index.ts",
+  "assets": {
+    "directory": "./ui/dist"
+  },
+  "compatibility_date": "2024-12-13",
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
+  "define": {
+    "import.meta.url": "'file:///worker/index.js'"
+  },
+  "alias": {
+    "@ai-sdk/amazon-bedrock": "./src/lib/stubs/unavailable-provider.cjs",
+    "@aws-sdk/credential-providers": "./src/lib/stubs/unavailable-provider.cjs",
+    "@ai-sdk/google-vertex": "./src/lib/stubs/unavailable-provider.cjs",
+    "@ai-sdk/google-vertex/anthropic": "./src/lib/stubs/unavailable-provider.cjs",
+    "@jerome-benoit/sap-ai-provider": "./src/lib/stubs/unavailable-provider.cjs",
+    "@langfuse/otel": "./src/lib/stubs/unavailable-provider.cjs",
+    "@opentelemetry/sdk-trace-node": "./src/lib/stubs/unavailable-provider.cjs",
+    "ai-sdk-provider-claude-code": "./src/lib/stubs/unavailable-provider.cjs",
+    "ai-sdk-provider-codex-cli": "./src/lib/stubs/unavailable-provider.cjs",
+    "ai-sdk-provider-opencode-sdk": "./src/lib/stubs/unavailable-provider.cjs",
+    "dify-ai-provider": "./src/lib/stubs/unavailable-provider.cjs"
+  },
+  "vars": {
+    "DEBUG": "false",
+    "FUFUNI_MERCHANT_URL": "https://api.fufuni.pp.ua"
+  },
+  "kv_namespaces": [
+    {
+      "binding": "KV_AI_PROXY",
+      "id": "6e8491ae2c0748ff9c19ea041d7d80bd"
+    }
+  ],
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "USAGE_DO",
+        "class_name": "UsageDbDurableObject"
+      }
+    ]
+  },
+  "migrations": [
+    {
+      "tag": "v1_usage_do_sqlite",
+      "new_sqlite_classes": ["UsageDbDurableObject"]
+    }
+  ],
+  "ratelimits": [
+    {
+      "name": "PROXY_RATE_LIMITER",
+      "namespace_id": "1001",
+      "simple": {
+        "limit": 10,
+        "period": 60
+      }
+    }
+  ],
+  "observability": {
+    "enabled": true
+  }
+}
