@@ -628,7 +628,7 @@ See `vitest.config.mts` for test configuration.
 ```bash
 npm test
 ```
-
+Cloudflare build configuration updated.
 ---
 
 ## 📜 License
