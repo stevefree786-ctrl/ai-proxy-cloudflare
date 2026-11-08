@@ -324,12 +324,16 @@ export const CrawlerCard: React.FC<CrawlerCardProps> = ({
                      navigator.clipboard.writeText(keys).then(() => {
                        // Show feedback by temporarily changing the icon
                        const button = document.activeElement;
-                       if (button) {
-                         button.style.opacity = '0.5';
-                         setTimeout(() => {
-                           button.style.opacity = '1';
-                         }, 2000);
-                       }
+
+if (button instanceof HTMLElement) {
+  const originalOpacity = button.style.opacity;
+
+  button.style.opacity = '0.5';
+
+  setTimeout(() => {
+    button.style.opacity = originalOpacity;
+  }, 2000);
+}
                      }).catch(err => {
                        console.error('Failed to copy keys to clipboard:', err);
                      });
